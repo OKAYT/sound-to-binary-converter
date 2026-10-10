@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SonoBin — convert sound to binary and binary back to sound. Microphone, file upload and tone generation." />
+  <title>SonoBin — Sound to Binary Converter</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===================== BACKGROUND LAYERS ===================== -->
+  <canvas id="binaryRain" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a href="#top" class="logo" aria-label="SonoBin home">
+        <span class="logo__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12h2l1.5-5 3 14 2.5-9 1.5 4H20" />
+          </svg>
+        </span>
+        <span class="logo__text">Sono<span class="logo__accent">Bin</span></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#converter">Converter</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#about">About</a>
+      </nav>
+
+      <a href="#converter" class="btn btn--primary btn--sm">Get Started</a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile" id="navMobile">
+      <a href="#converter">Converter</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#about">About</a>
+      <a href="#converter" class="btn btn--primary btn--sm">Get Started</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===================== HERO ===================== -->
+    <section class="hero reveal">
+      <div class="container">
+        <div class="hero__card">
+          <div class="hero__glow" aria-hidden="true"></div>
+
+          <div class="hero__content">
+            <span class="badge">
+              <span class="badge__dot" aria-hidden="true"></span>
+              Sound &rarr; Binary &rarr; Sound
+            </span>
+            <h1 class="hero__title">
+              The modern <span class="grad-text">sound&#8209;to&#8209;binary</span> platform
+            </h1>
+            <p class="hero__subtitle">
+              Turn any sound into a stream of 0s and 1s in real time — from your microphone,
+              an audio file, or a generated tone. Then decode it back into sound.
+            </p>
+            <div class="hero__actions">
+              <a href="#converter" class="btn btn--primary">Get Started</a>
+              <a href="#how" class="btn btn--ghost">Learn More</a>
+            </div>
+          </div>
+
+          <!-- Orbit graphic with floating icon bubbles -->
+          <div class="hero__orbit" aria-hidden="true">
+            <div class="orbit-ring orbit-ring--1"></div>
+            <div class="orbit-ring orbit-ring--2"></div>
+            <div class="orbit-core">
+              <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12h2l2-6 3 16 3-12 2 6 2-4h4" />
+              </svg>
+            </div>
+            <span class="orbit-bubble orbit-bubble--a">0</span>
+            <span class="orbit-bubble orbit-bubble--b">1</span>
+            <span class="orbit-bubble orbit-bubble--c">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>
+            </span>
+            <span class="orbit-bubble orbit-bubble--d">♪</span>
+            <span class="orbit-bubble orbit-bubble--e">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M2 12h20"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TECH STRIP ===================== -->
+    <section class="techstrip reveal">
+      <div class="container techstrip__inner">
+        <span class="techstrip__label">Powered by</span>
+        <ul class="techstrip__list">
+          <li>Web Audio API</li>
+          <li>WAV</li>
+          <li>MP3</li>
+          <li>OGG</li>
+          <li>Canvas</li>
+          <li>JavaScript</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== CONVERTER ===================== -->
+    <section id="converter" class="section reveal">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">The converter</span>
+          <h2 class="section__title">Sound <span class="grad-text">&#8596;</span> Binary</h2>
+          <p class="section__sub">Pick a source, tune the settings, and watch the bits appear.</p>
+        </div>
+
+        <div class="converter">
+          <!-- Tabs -->
+          <div class="tabs" role="tablist" aria-label="Input source">
+            <button class="tab is-active" role="tab" aria-selected="true" data-tab="mic">Microphone</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="upload">Upload</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="tone">Tone</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="reverse">Binary &rarr; Sound</button>
+          </div>
+
+          <div class="converter__grid">
+            <!-- LEFT: visualizer + controls -->
+            <div class="converter__main">
+              <div class="visualizer">
+                <canvas id="viz" width="900" height="220" aria-label="Audio visualizer"></canvas>
+                <div class="visualizer__hint" id="vizHint">Waiting for audio&hellip;</div>
+              </div>
+
+              <!-- Panel: Microphone -->
+              <div class="panel is-active" data-panel="mic">
+                <button class="mic-btn" id="micBtn" aria-label="Start recording">
+                  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="2" width="6" height="12" rx="3" />
+                    <path d="M5 10a7 7 0 0 0 14 0M12 17v5M8 22h8" />
+                  </svg>
+                </button>
+                <div class="panel__info">
+                  <strong id="micStatus">Tap to record</strong>
+                  <span>Convert live microphone samples into binary in real time.</span>
+                </div>
+              </div>
+
+              <!-- Panel: Upload -->
+              <div class="panel" data-panel="upload">
+                <label class="dropzone" for="fileInput" id="dropzone">
+                  <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <path d="M17 8l-5-5-5 5M12 3v12" />
+                  </svg>
+                  <span class="dropzone__title">Drop an audio file or click to browse</span>
+                  <span class="dropzone__sub">Supports .mp3, .wav, .ogg</span>
+                  <input type="file" id="fileInput" accept=".mp3,.wav,.ogg,audio/*" hidden />
+                </label>
+                <button class="btn btn--ghost btn--sm" id="loadDemoBtn">Load demo sample</button>
+              </div>
+
+              <!-- Panel: Tone -->
+              <div class="panel" data-panel="tone">
+                <div class="field-row">
+                  <label class="field">
+                    <span>Frequency (Hz)</span>
+                    <input type="number" id="toneFreq" value="440" min="20" max="20000" step="1" />
+                  </label>
+                  <label class="field">
+                    <span>Duration (s)</span>
+                    <input type="number" id="toneDur" value="2" min="0.1" max="20" step="0.1" />
+                  </label>
+                  <label class="field">
+                    <span>Waveform</span>
+                    <select id="toneWave">
+                      <option value="sine">Sine</option>
+                      <option value="square">Square</option>
+                      <option value="sawtooth">Sawtooth</option>
+                      <option value="triangle">Triangle</option>
+                    </select>
+                  </label>
+                </div>
+                <button class="btn btn--primary btn--sm" id="toneBtn">Generate tone &amp; play</button>
+              </div>
+
+              <!-- Panel: Reverse -->
+              <div class="panel" data-panel="reverse">
+                <label class="field">
+                  <span>Paste binary (groups of 0s and 1s)</span>
+                  <textarea id="binInput" rows="4" placeholder="e.g. 10000000 11000000 11100000 ..."></textarea>
+                </label>
+                <div class="field-row">
+                  <button class="btn btn--primary btn--sm" id="decodeBtn">Play as sound</button>
+                  <button class="btn btn--ghost btn--sm" id="loadOutputBtn">Use last output</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: settings + output -->
+            <aside class="converter__side">
+              <div class="card settings">
+                <h3 class="card__title">Settings</h3>
+                <label class="field">
+                  <span>Bit depth</span>
+                  <select id="bitDepth">
+                    <option value="8">8-bit</option>
+                    <option value="16" selected>16-bit</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Sample rate</span>
+                  <select id="sampleRate">
+                    <option value="8000">8,000 Hz</option>
+                    <option value="11025">11,025 Hz</option>
+                    <option value="22050">22,050 Hz</option>
+                    <option value="44100" selected>44,100 Hz</option>
+                    <option value="48000">48,000 Hz</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Channels</span>
+                  <select id="channels">
+                    <option value="1" selected>Mono</option>
+                    <option value="2">Stereo (downmix)</option>
+                  </select>
+                </label>
+
+                <div class="stats" id="stats">
+                  <div class="stat"><span class="stat__k">Bits</span><span class="stat__v" data-stat="bits">0</span></div>
+                  <div class="stat"><span class="stat__k">Sample rate</span><span class="stat__v" data-stat="rate">— Hz</span></div>
+                  <div class="stat"><span class="stat__k">Duration</span><span class="stat__v" data-stat="dur">— s</span></div>
+                  <div class="stat"><span class="stat__k">Size</span><span class="stat__v" data-stat="size">—</span></div>
+                </div>
+              </div>
+
+              <div class="card output-card">
+                <div class="output-card__head">
+                  <h3 class="card__title">Binary output</h3>
+                  <span class="pill" id="truncBadge" hidden>truncated preview</span>
+                </div>
+                <textarea id="output" class="output" readonly spellcheck="false" placeholder="Binary will appear here…"></textarea>
+                <div class="output-card__actions">
+                  <button class="btn btn--primary btn--sm" id="copyBtn">Copy</button>
+                  <button class="btn btn--ghost btn--sm" id="downloadBtn">Download .txt</button>
+                  <button class="btn btn--ghost btn--sm" id="clearBtn">Clear</button>
+                </div>
+                <div class="progress" id="progress" hidden><div class="progress__bar" id="progressBar"></div></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURES ===================== -->
+    <section id="features" class="section reveal">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">Features</span>
+          <h2 class="section__title">Built for <span class="grad-text">clarity</span></h2>
+          <p class="section__sub">Everything you need to see sound as numbers.</p>
+        </div>
+
+        <div class="bento">
+          <article class="card feature feature--wide">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <h3>Optimized for accuracy</h3>
+            <p>Quantize samples to 8-bit or 16-bit with correct sample-rate handling for faithful digital representation.</p>
+            <svg class="spark" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true">
+              <polyline points="0,40 30,38 60,35 90,30 120,26 150,20 180,16 210,12 240,10 270,8 300,6" />
+            </svg>
+          </article>
+
+          <article class="card feature">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h3l2-7 3 16 3-13 2 8 2-5h5"/></svg>
+            </div>
+            <h3>Real-time visualization</h3>
+            <p>A glowing canvas waveform and frequency bars react instantly as sound flows in.</p>
+          </article>
+
+          <article class="card feature">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
+            </div>
+            <h3>Infinite options</h3>
+            <p>Choose bit depth, sample rate and channels. Every combination produces different bits.</p>
+          </article>
+
+          <article class="card feature feature--thread">
+            <div class="feature__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Chunked processing</h3>
+            <p>Large files are processed in chunks so the interface never freezes, with a truncated preview and full download.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section id="how" class="section reveal">
+      <div class="container">
+        <div class="section__head">
+          <span class="eyebrow">How it works</span>
+          <h2 class="section__title">From air to <span class="grad-text">8 bits</span></h2>
+          <p class="section__sub">A single sound wave becomes thousands of binary numbers.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <span class="step__num">01</span>
+            <h3>Sampling</h3>
+            <p>The continuous wave is measured thousands of times per second — this is the sample rate.</p>
+          </article>
+          <article class="step">
+            <span class="step__num">02</span>
+            <h3>Quantization</h3>
+            <p>Each measurement is rounded to the nearest level allowed by the bit depth.</p>
+          </article>
+          <article class="step">
+            <span class="step__num">03</span>
+            <h3>Encoding</h3>
+            <p>Every level is written as 0s and 1s, producing the final binary stream.</p>
+          </article>
+          <article class="step">
+            <span class="step__num">04</span>
+            <h3>Decoding</h3>
+            <p>Reverse the process to turn binary back into an audible waveform.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section id="about" class="section reveal">
+      <div class="container">
+        <div class="cta">
+          <div class="cta__glow" aria-hidden="true"></div>
+          <h2>More than just a converter</h2>
+          <p>A hands-on way to see how sound becomes data. Free, private, and entirely in your browser.</p>
+          <a href="#converter" class="btn btn--primary">Start converting</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__text">Sono<span class="logo__accent">Bin</span></span>
+        <p>Sound &harr; Binary, right in your browser.</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer">
+        <a href="#converter">Converter</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#about">About</a>
+      </nav>
+      <p class="footer__copy">© <span id="year"></span> SonoBin. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===================== TOASTS ===================== -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <audio id="player" hidden></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
